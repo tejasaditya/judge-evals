@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual envs
+.venv/
+
+# Tooling caches
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Secrets
+.env
+
+# Local caches / databases
+*.sqlite
+*.db
+
+# OS
+.DS_Store
+
+# AI / agent working docs (not for public repo)
+CLAUDE.md
+PLAN.md
+HANDOFF.md
+.agents/
