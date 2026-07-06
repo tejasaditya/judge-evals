@@ -1,5 +1,9 @@
 """judge-evals: an LLM-as-judge evaluation harness."""
 
+from judge_evals.cache import VerdictCache
+from judge_evals.cli import app
+from judge_evals.prompt import PROMPT_VERSION, build_judge_prompt, parse_judge_response
+from judge_evals.runner import judge_batch, judge_sample
 from judge_evals.types import (
     Criterion,
     CriterionScore,
@@ -10,16 +14,28 @@ from judge_evals.types import (
 )
 
 __all__ = [
+    # Types
     "Scale",
     "Criterion",
     "Rubric",
     "CriterionScore",
     "JudgeVerdict",
     "Sample",
+    # Prompt
+    "PROMPT_VERSION",
+    "build_judge_prompt",
+    "parse_judge_response",
+    # Cache
+    "VerdictCache",
+    # Runner
+    "judge_sample",
+    "judge_batch",
+    # CLI
+    "app",
     "main",
 ]
 
 
 def main() -> None:
-    """Placeholder entry point; replaced by the typer CLI in M1."""
-    print("judge-evals — LLM-as-judge harness. CLI arrives in M1.")
+    """Entry point for the ``judge-evals`` console script."""
+    app()

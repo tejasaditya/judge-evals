@@ -53,12 +53,3 @@ Requires [uv](https://docs.astral.sh/uv/). Python 3.11+ is provisioned by uv its
 
 Copy `.env.example` to `.env` and fill in provider keys for whichever judge backend you use.
 
-## Status
-
-| Milestone | Scope | Status |
-|-----------|-------|--------|
-| M0 | Scaffold: uv project, CI, README, core types (`Rubric`, `Criterion`, `JudgeVerdict`, `Sample`) | ✅ Done |
-| M1 | Batch judge runner: prompt builder, async runner + sqlite cache, bias controls, CLI | ⬜ Not started |
-| M2 | Agreement vs. humans: ingest labels, kappa / confusion matrix, public benchmark | ⬜ Not started |
-| M3 | Runtime gate: `JudgeGate` wrapper, retry-with-feedback state machine, rescue-rate demo | ⬜ Not started |
-| M4 | Ship: docs, examples, PyPI publish, write-up, tag v0.1.0 | ⬜ Not started |
