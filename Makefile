@@ -16,3 +16,6 @@ format:
 
 run:
 	uv run judge-evals --help
+
+benchmark:
+	uv run python scripts/benchmark.py

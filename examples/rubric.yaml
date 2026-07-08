@@ -1,0 +1,15 @@
+name: QA-Quality
+version: v1
+criteria:
+  - name: accuracy
+    description: "Is the answer factually correct based on the input?"
+    required: true
+    scale:
+      min: 1
+      max: 5
+  - name: clarity
+    description: "Is the answer clear and well-written?"
+    required: false
+    scale:
+      min: 1
+      max: 5
