@@ -3,6 +3,18 @@
 from judge_evals.agreement import AgreementReport, compute_agreement
 from judge_evals.cache import VerdictCache
 from judge_evals.cli import app
+from judge_evals.gate import (
+    AgentFn,
+    GateAction,
+    GateAttempt,
+    GatePolicy,
+    GateTrace,
+    JudgeGate,
+    backoff_delay,
+    decide_action,
+    format_feedback,
+    rescue_rate,
+)
 from judge_evals.labels import HumanLabel, load_labels
 from judge_evals.prompt import PROMPT_VERSION, build_judge_prompt, parse_judge_response
 from judge_evals.runner import judge_batch, judge_sample
@@ -37,6 +49,17 @@ __all__ = [
     # Agreement
     "compute_agreement",
     "load_labels",
+    # Runtime gate (M3)
+    "GateAction",
+    "GatePolicy",
+    "GateAttempt",
+    "GateTrace",
+    "AgentFn",
+    "format_feedback",
+    "backoff_delay",
+    "rescue_rate",
+    "decide_action",
+    "JudgeGate",
     # CLI
     "app",
     "main",
