@@ -1,4 +1,4 @@
-.PHONY: setup test lint format run
+.PHONY: setup test lint format run benchmark demo
 
 setup:
 	uv sync --dev
@@ -19,3 +19,6 @@ run:
 
 benchmark:
 	uv run python scripts/benchmark.py
+
+demo:
+	uv run python scripts/gate_demo.py
