@@ -230,6 +230,78 @@ def test_agentfn_protocol_accepts_matching_callable():
     assert callable(fn)
 
 
+# --- serialization contract (GateTrace is a persisted "full trace record") -
+
+
+def test_trace_derived_properties_are_not_serialized_fields():
+    # passed/rescued/n_attempts/etc. are @property, so they must not appear as fields.
+    trace = GateTrace(
+        rubric_name="quality",
+        attempts=[_attempt(1, required_passed=True, action=GateAction.ACCEPT)],
+        final_action=GateAction.ACCEPT,
+    )
+    dumped = trace.model_dump()
+    assert set(dumped) == {"sample_id", "rubric_name", "attempts", "final_action"}
+    for prop in ("passed", "rescued", "n_attempts", "n_retries"):
+        assert prop not in dumped
+
+
+def test_trace_json_roundtrip_preserves_attempts_and_derived_props():
+    original = GateTrace(
+        sample_id="task-01",
+        rubric_name="quality",
+        attempts=[
+            _attempt(1, required_passed=False, action=GateAction.RETRY),
+            _attempt(2, required_passed=True, action=GateAction.ACCEPT),
+        ],
+        final_action=GateAction.ACCEPT,
+    )
+    restored = GateTrace.model_validate_json(original.model_dump_json())
+    assert restored == original
+    # Derived properties recompute correctly off the restored attempts.
+    assert restored.passed is True
+    assert restored.rescued is True
+    assert restored.n_attempts == 2
+    assert restored.final_action is GateAction.ACCEPT
+
+
+def test_gateaction_serializes_as_its_string_value():
+    trace = GateTrace(
+        rubric_name="quality",
+        attempts=[_attempt(1, required_passed=False, action=GateAction.ESCALATE)],
+        final_action=GateAction.ESCALATE,
+    )
+    assert GateAction.ESCALATE == "escalate"  # StrEnum
+    assert '"escalate"' in trace.model_dump_json()
+
+
+# --- extra helper / policy edge cases --------------------------------------
+
+
+def test_policy_rejects_backoff_factor_below_one():
+    with pytest.raises(ValueError):
+        GatePolicy(backoff_factor=0.5)
+
+
+def test_format_feedback_handles_missing_rationale():
+    verdict = JudgeVerdict(
+        rubric_name="quality",
+        rubric_version="v1",
+        judge_model="test-model",
+        scores=[
+            CriterionScore(
+                criterion_name="accuracy",
+                score=1,
+                rationale="   ",  # whitespace-only → treated as missing
+                passed=False,
+                required=True,
+            )
+        ],
+    )
+    fb = format_feedback(verdict)
+    assert "(no rationale given)" in fb
+
+
 # --- STATE MACHINE SPEC (skipped until implemented) ------------------------
 
 
